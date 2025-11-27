@@ -25,6 +25,19 @@ type CheckResult struct {
 
 var version = "0.0.0-dev"
 
+// main 函数是程序入口，负责解析命令行参数、读取URL列表、并发检测URL状态，
+// 并根据配置将结果打印到终端或导出为CSV文件。
+//
+// 命令行参数说明：
+//
+//	-c int
+//	  	并发数（默认5）
+//	-t int
+//	  	超时时间（秒，默认5）
+//	-f string
+//	  	URL列表文件路径（每行一个URL）
+//	-o string
+//	  	结果导出为CSV文件路径（如 -o result.csv）
 func main() {
 	concurrency := flag.Int("c", 5, "并发数（默认5）")
 	timeout := flag.Int("t", 5, "超时时间（秒，默认5）")
@@ -32,6 +45,7 @@ func main() {
 	outputFile := flag.String("o", "", "结果导出为CSV文件路径（如 -o result.csv）")
 	flag.Parse()
 
+	// 从文件读取URL列表，如果未提供则使用命令行参数中的URL
 	var urls []string
 	var err error
 	if *inputFile != "" {
@@ -44,6 +58,7 @@ func main() {
 		urls = flag.Args()
 	}
 
+	// 检查是否有待检测的URL
 	if len(urls) == 0 {
 		fmt.Println("请传入要检测的URL，示例：go run main.go https://baidu.com https://github.com")
 		return
