@@ -108,7 +108,7 @@ func main() {
 		// 打印结果
 		for _, result := range results {
 			if result.ErrMsg == "" {
-				fmt.Printf(" ✅ URL:[%s] 状态码:[%d] 耗时:[%.2f ms] 失败原因:[%s]\n", result.Url, result.Code, result.Cost.Seconds()*1000, result.ErrMsg)
+				fmt.Printf(" ✅ URL:[%s] 状态码:[%d] 耗时:[%.2f ms]\n", result.Url, result.Code, result.Cost.Seconds()*1000)
 			} else {
 				fmt.Printf(" ❌ URL:[%s] 状态码:[%d] 耗时:[%.2f ms] 失败原因:[%s]\n", result.Url, result.Code, result.Cost.Seconds()*1000, result.ErrMsg)
 			}
