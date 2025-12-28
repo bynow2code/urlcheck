@@ -15,13 +15,13 @@ Quickly check the availability of batch URLs, supporting concurrency control, ti
 
 ## Usage Examples
 
-# Check a single URL
+### Check a single URL
 
 ```
 ./urlcheck https://google.cn
 ```
 
-# Read from file, with 20 concurrent requests, 3 second timeout, export results
+### Read from file, with 20 concurrent requests, 3 second timeout, export results
 
 ```
 ./urlcheck -f urls.txt -c 20 -t 3 -o result.csv

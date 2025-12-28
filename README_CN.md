@@ -13,12 +13,12 @@
 - 支持结果导出为CSV文件
 
 ## 使用示例
-# 检测单个URL
+### 检测单个URL
 ```
 ./urlcheck https://baidu.com
 ```
 
-# 从文件读取，并发20，超时3秒，导出结果
+### 从文件读取，并发20，超时3秒，导出结果
 ```
 ./urlcheck -f urls.txt -c 20 -t 3 -o result.csv
 ```
