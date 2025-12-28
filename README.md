@@ -1,17 +1,28 @@
-# urlcheck：并发URL可用性检测工具
+[English version](README.md) | [中文版](README_CN.md)
 
-快速检测批量URL的可用性，支持并发控制、超时设置、结果导出CSV。
+[![Release](https://github.com/bynow2code/urlcheck/actions/workflows/release.yml/badge.svg)](https://github.com/bynow2code/rotail/actions/workflows/release.yml)
 
-## 功能
-- 从命令行或文件读取URL列表
-- 自定义并发数和超时时间
-- 输出状态码、响应耗时、失败原因
-- 支持结果导出为CSV文件
+# urlcheck: Concurrent URL Availability Detection Tool
 
-## 使用示例
-```bash
-# 检测单个URL
-./urlcheck https://baidu.com
+Quickly check the availability of batch URLs, supporting concurrency control, timeout settings, and CSV result export.
 
-# 从文件读取，并发20，超时3秒，导出结果
+## Features
+- Read URL list from command line or file
+- Customizable concurrency count and timeout duration
+- Output status code, response time, and failure reasons
+- Support for exporting results to CSV files
+
+## Usage Examples
+# Check a single URL
+```
+./urlcheck https://google.cn
+```
+
+# Read from file, with 20 concurrent requests, 3 second timeout, export results
+```
 ./urlcheck -f urls.txt -c 20 -t 3 -o result.csv
+```
+
+## Support
+
+If you find this tool helpful, please give the project a star! ✨
