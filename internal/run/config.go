@@ -32,7 +32,7 @@ func ParseFlags() (*Config, error) {
 	flag.Parse()
 
 	if *ver {
-		println("version: ", version)
+		println("version:", version)
 		os.Exit(0)
 	}
 
