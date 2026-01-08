@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
@@ -13,17 +12,14 @@ import (
 )
 
 func Run(cfg *Config) error {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
-	var wg sync.WaitGroup
 	errors := make(chan error, 1)
-	doneCh := make(chan struct{})
+	done := make(chan struct{})
 
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		defer close(doneCh)
+		defer close(done)
 
 		if err := checker.RunUrlChecker(
 			ctx,
@@ -39,27 +35,22 @@ func Run(cfg *Config) error {
 		}
 	}()
 
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-
+	var runErr error
 	select {
-	case <-sigChan:
+	case <-ctx.Done():
 		fmt.Println("ℹ️ Received stop signal, shutting down...")
-	case err := <-errors:
-		fmt.Fprintf(os.Stderr, "❌ Exiting due to error: %v\n", err)
-	case <-doneCh:
+	case runErr = <-errors:
+		fmt.Fprintf(os.Stderr, "❌ Exiting due to error: %v\n", runErr)
+		stop()
+	case <-done:
+		return nil
 	}
 
-	cancel()
-
-	waitDone := make(chan struct{})
-	go func() {
-		wg.Wait()
-		close(waitDone)
-	}()
-
 	select {
-	case <-waitDone:
+	case <-done:
+		if runErr == nil {
+			fmt.Println("✅ Graceful shutdown completed.")
+		}
 	case <-time.After(5 * time.Second):
 		fmt.Println("⚠️ Shutdown timed out, forcing exit.")
 	}
